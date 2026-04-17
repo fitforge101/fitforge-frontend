@@ -30,7 +30,7 @@ jobs:
     if: github.event_name == 'pull_request'
     uses: fitforge101/fitforge-shared/.github/workflows/_sca.yml@v2.0.0
     with:
-      service-name: frontend-service
+      service-name: frontend
       service-path: .
       runtime: node
     secrets:
@@ -42,10 +42,10 @@ jobs:
     if: needs.sca.outputs.critical-found == 'true'
     uses: fitforge101/fitforge-shared/.github/workflows/_notify.yml@v2.0.0
     with:
-      subject: "🚨 Snyk: Critical Vulnerabilities in frontend-service"
-      body: "Critical/High vulnerabilities found in frontend-service dependencies."
-      service-name: frontend-service
-      artifact-name: snyk-report-frontend-service
+      subject: "🚨 Snyk: Critical Vulnerabilities in frontend"
+      body: "Critical/High vulnerabilities found in frontend dependencies."
+      service-name: frontend
+      artifact-name: snyk-report-frontend
     secrets:
       BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
 
@@ -55,7 +55,7 @@ jobs:
     if: github.event_name == 'pull_request'
     uses: fitforge101/fitforge-shared/.github/workflows/_docker-build.yml@v2.0.0
     with:
-      service-name: frontend-service
+      service-name: frontend
       service-path: .
 
   # ─── Notify: Trivy Criticals ───
@@ -64,10 +64,10 @@ jobs:
     if: needs.build.outputs.trivy-critical == 'true'
     uses: fitforge101/fitforge-shared/.github/workflows/_notify.yml@v2.0.0
     with:
-      subject: "🚨 Trivy: Critical Vulnerabilities in frontend-service"
-      body: "CRITICAL vulnerabilities found in frontend-service Docker image."
-      service-name: frontend-service
-      artifact-name: trivy-frontend-service
+      subject: "🚨 Trivy: Critical Vulnerabilities in frontend"
+      body: "CRITICAL vulnerabilities found in frontend Docker image."
+      service-name: frontend
+      artifact-name: trivy-frontend 
     secrets:
       BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
 
@@ -76,7 +76,7 @@ jobs:
     if: github.event_name == 'push'
     uses: fitforge101/fitforge-shared/.github/workflows/_docker-publish.yml@v2.0.0
     with:
-      service-name: frontend-service
+      service-name: frontend
       service-path: .
       environment: ${{ github.ref_name }}
     secrets:
